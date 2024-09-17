@@ -1,0 +1,42 @@
+services:
+  webtop:
+    image: 'lscr.io/linuxserver/webtop:latest'
+    networks:
+      - no-internet
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - SUBFOLDER=/
+      - 'TITLE=Example Container'
+    devices:
+      - '/dev/dri:/dev/dri'
+    restart: unless-stopped
+    labels:
+      - coolify.managed=true
+      - coolify.version=4.0.0-beta.333
+      - coolify.serviceId=103
+      - coolify.type=service
+      - coolify.name=webtop-mcs0oowswso4okg8k8ko444c
+      - coolify.pullRequestId=0
+      - coolify.service.subId=108
+      - coolify.service.subType=application
+      - traefik.enable=true
+      - traefik.http.middlewares.gzip.compress=true
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+      - traefik.http.routers.http-0-mcs0oowswso4okg8k8ko444c-webtop.entryPoints=http
+      - traefik.http.routers.http-0-mcs0oowswso4okg8k8ko444c-webtop.middlewares=redirect-to-https
+      - 'traefik.http.routers.http-0-mcs0oowswso4okg8k8ko444c-webtop.rule=Host(`lab1-user1.blo1.infra.callowaysutton.com`) && PathPrefix(`/`)'
+      - traefik.http.routers.http-0-mcs0oowswso4okg8k8ko444c-webtop.service=http-0-mcs0oowswso4okg8k8ko444c-webtop
+      - traefik.http.routers.https-0-mcs0oowswso4okg8k8ko444c-webtop.entryPoints=https
+      - traefik.http.routers.https-0-mcs0oowswso4okg8k8ko444c-webtop.middlewares=gzip
+      - 'traefik.http.routers.https-0-mcs0oowswso4okg8k8ko444c-webtop.rule=Host(`lab1-user1.blo1.infra.callowaysutton.com`) && PathPrefix(`/`)'
+      - traefik.http.routers.https-0-mcs0oowswso4okg8k8ko444c-webtop.service=https-0-mcs0oowswso4okg8k8ko444c-webtop
+      - traefik.http.routers.https-0-mcs0oowswso4okg8k8ko444c-webtop.tls.certresolver=letsencrypt
+      - traefik.http.routers.https-0-mcs0oowswso4okg8k8ko444c-webtop.tls=true
+      - traefik.http.services.http-0-mcs0oowswso4okg8k8ko444c-webtop.loadbalancer.server.port=3000
+      - traefik.http.services.https-0-mcs0oowswso4okg8k8ko444c-webtop.loadbalancer.server.port=3000
+networks:
+  no-internet:
+    driver: bridge
+    internal: true # Block internet access
